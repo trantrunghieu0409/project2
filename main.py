@@ -43,10 +43,10 @@ def main_test():
     input_file = [
         # file you want to test
         # remember to put ',' at the end ;) 
-        'input.txt', 
-        'input2.txt',
+        'test_case/input.txt', 
+        'test_case/input2.txt',
     ]
-    
+
     problem_list = []
     for inp in input_file:
         matrix = read_file(inp)
