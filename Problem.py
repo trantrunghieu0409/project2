@@ -33,7 +33,35 @@ class Problem:
         return [x[:] for x in self.puzzle]
     
     def check_solution(self, solution):
-        return True
+        if type(solution) is list:
+            # Form 1
+            # [1,2,3,-4,5,-6,...]
+            if type(solution[0]) is int:
+                for i in range(self.size):
+                    for j in range(self.size):
+                        if self.puzzle[i][j] != -1:
+                            if len([x for x in get_surrounding(self.board,i ,j) if solution[x - 1] > 0]) != self.puzzle[i][j]:
+                                return False
+                
+                return True
+
+            # Form 2
+            """
+            [1,2,3]
+            [4,-5,-6]
+            ...
+            """
+            if type(solution[0]) is list:
+                for i in range(self.size):
+                    for j in range(self.size):
+                        if self.puzzle[i][j] != -1:
+                            if len([x for x in get_surrounding(solution, i, j) if x  > 0]) != self.puzzle[i][j]:
+                                return False
+
+                return True
+
+        # Different solution format
+        return False 
 
     def show(self, solution):
         """
@@ -67,8 +95,10 @@ class Problem:
                             print('G', end=' ')
                         else:
                             print('_', end=' ')
-        
-        print("Invalid solution!")
+            else:
+                print("Invalid solution!")
+        else:
+            print("Invalid solution!")
         pass
         
     def get_clauses(self, i, j):
