@@ -1,7 +1,7 @@
 from backtrack import solve
 from AStar import solve
 import pysat_CNF as py
-from BruteForce import solve
+import BruteForce as bf
 from Problem import Problem
 
 import time
@@ -39,7 +39,7 @@ def main():
 
 
 def main_test():
-    matrix = read_file('input.txt')
+    matrix = read_file('input2.txt')
 
     # formualte problem
     p = Problem(matrix)
@@ -59,6 +59,7 @@ def main_test():
         # Your algorithma2
 
         solution = py.solve(p)
+        solution = bf.solve(p)
 
         # Should have a line: solution = ....
 
