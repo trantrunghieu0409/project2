@@ -1,16 +1,23 @@
 from backtrack import solve
 from AStar import solve
-from pysat import solve
+import pysat_CNF as py
 from BruteForce import solve
-import Problem
+from Problem import Problem
 
 import time
 
 def read_file(input_file):
+    """
+    Read input from file
+
+    Returns a matrix
+
+    Note: character '.' will be convert into -1.
+    """
     matrix = list()
     with open(input_file, 'r') as f:
         for line in f:
-            matrix.append(line.split())    
+            matrix.append([int(x) if x != '.' else -1 for x in line.split()])    
         f.close()
     return matrix
 
@@ -25,14 +32,14 @@ def main():
     p = Problem(matrix)
          
     # Your algorithm
-    solution = solve(p)
+    solution = py.solve(p)
 
     # Write into output file
     write_file('output.txt', solution)    
 
 
 def main_test():
-    matrix = read_file('../testcase/level-3-5-input.txt')
+    matrix = read_file('input.txt')
 
     # formualte problem
     p = Problem(matrix)
@@ -51,7 +58,7 @@ def main_test():
 
         # Your algorithma2
 
-        solution = solve(p)
+        solution = py.solve(p)
 
         # Should have a line: solution = ....
 
@@ -72,6 +79,7 @@ def main_test():
     if solution != None:
         if p.check_solution(solution):
             print('Correct solution!')
+            p.show(solution)
         else:
             print('Wrong solution!')
     print('<<<<<<')
@@ -81,8 +89,8 @@ def main_test():
 
 #----------------------------------------------------------------------
 # call main function
-if __name__ == '__main__':
-    main()
+#if __name__ == '__main__':
+#    main()
 
 # Call main_test() if you want to show time and check solution
-#main_test()
+main_test()
