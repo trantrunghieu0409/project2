@@ -109,5 +109,6 @@ def Backtrack(puzzle, board, solution, i, j):
 def solve(p):
     solution = []
     rs = Backtrack(p.puzzle, p.board, solution, 0,0)
-    print(rs)
+    # format solution
+    rs = [x + 1 if x + 1 in rs else -(x + 1) for x in range(p.size ** 2)]
     return rs

@@ -29,9 +29,9 @@ def main():
     input_file = [
         # file you want to test
         # remember to put ',' at the end ;) 
-        #'test_case/input.txt',
-        #'test_case/input2.txt',
-        'test_case/input3.txt',
+        'test_case/input.txt',
+        'test_case/input2.txt',
+        #'test_case/input3.txt',
     ]
 
     problem_list = []
@@ -39,7 +39,7 @@ def main():
         matrix = read_file(inp)
 
         # formualte problem
-        problem_list.append([Problem(matrix), matrix])
+        problem_list.append(Problem(matrix))
 
     
     # initialize
@@ -73,7 +73,7 @@ def main():
     n_test = len(input_file)
     count = 0
     for i in range(n_test):
-        p = problem_list[i][0]
+        p = problem_list[i]
         solution = result[i][0]
         time_run = result[i][1]
 
