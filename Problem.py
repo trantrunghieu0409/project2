@@ -101,7 +101,7 @@ class Problem:
             print("Invalid solution!")
         pass
         
-    def get_clauses(self, i, j):
+    def gen_one_CNF(self, i , j):
         k = self.puzzle[i][j]
         clauses = []
         
@@ -110,11 +110,11 @@ class Problem:
 
         for it in c:
             clause = list(it) + [x for x in surr if x not in list(it)]
-            clauses += gen_clauses(k, np.array(clause))
+            res = gen_clauses(k, np.array(clause))
+            res = [sorted(x) for x in res if sorted(x) not in clauses]
+            
+            clauses += res
         return clauses
-
-    def gen_one_CNF(self, i , j):
-        return self.get_clauses(i , j)
 
     def gen_all_CNF(self):
         clauses = []
@@ -149,3 +149,24 @@ def gen_clauses(k, list_cells):
     return clauses
 
 
+def sublist(ls1, ls2):
+    '''
+    >>> sublist([], [1,2,3])
+    True
+    >>> sublist([1,2,3,4], [2,5,3])
+    True
+    >>> sublist([1,2,3,4], [0,3,2])
+    False
+    >>> sublist([1,2,3,4], [1,2,5,6,7,8,5,76,4,3])
+    False
+    '''
+    def get_all_in(one, another):
+        for element in one:
+            if element in another:
+                yield element
+
+    for x1, x2 in zip(get_all_in(ls1, ls2), get_all_in(ls2, ls1)):
+        if x1 != x2:
+            return False
+
+    return True

@@ -25,26 +25,13 @@ def write_file(output_file, solution):
     pass
 
 def main():
-    # initialize
-    matrix = read_file('input.txt')
-
-    # formualte problem
-    p = Problem(matrix)
-         
-    # Your algorithm
-    solution = py.solve(p)
-
-    # Write into output file
-    write_file('output.txt', solution)    
-
-
-def main_test():
     
     input_file = [
         # file you want to test
         # remember to put ',' at the end ;) 
         'test_case/input.txt', 
-        'test_case/input2.txt',
+        #'test_case/input2.txt',
+        #'test_case/input3.txt',
     ]
 
     problem_list = []
@@ -102,11 +89,7 @@ def main_test():
     print(f'Number of success solution: {count}/{n_test}')
     print(f'Average time require: {sum([time for solution , time in result]) / n_test}')
 
-
 #----------------------------------------------------------------------
-# call main function
+#Run this if you want to show result
 #if __name__ == '__main__':
 #    main()
-
-# Call main_test() if you want to show time and check solution
-main_test()
