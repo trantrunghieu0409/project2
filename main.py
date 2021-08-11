@@ -39,7 +39,7 @@ def main():
         matrix = read_file(inp)
 
         # formualte problem
-        problem_list.append(Problem(matrix))
+        problem_list.append([Problem(matrix), matrix])
 
     
     # initialize
@@ -59,6 +59,8 @@ def main():
         #solution = py.solve(problem)
         #solution = bf.solve(problem)
         solution = bt.solve(problem)
+        # solution = bf.solve(problem[1])
+
 
         # end clock
         end = time.time()    
@@ -71,7 +73,7 @@ def main():
     n_test = len(input_file)
     count = 0
     for i in range(n_test):
-        p = problem_list[i]
+        p = problem_list[i][0]
         solution = result[i][0]
         time_run = result[i][1]
 
