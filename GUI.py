@@ -1,25 +1,29 @@
-import tkinter as tk
+from tkinter import *
+from tkinter import filedialog as fd 
 
-class Application(tk.Frame):
-    def __init__(self, master=None):
-        super().__init__(master)
-        self.master = master
-        self.pack()
-        self.create_widgets()
+class Application(Frame):
+    def __init__(self, parent):
+        Frame.__init__(self, parent, background="white")
+        self.parent = parent
+        self.initUI()
+        self.choose_file()
 
-    def create_widgets(self):
-        self.hi_there = tk.Button(self)
-        self.hi_there["text"] = "Hello World\n(click me)"
-        self.hi_there["command"] = self.say_hi
-        self.hi_there.pack(side="top")
+    def initUI(self):
+        self.parent.title("A* Trace")
+        self.pack(fill=BOTH, expand=1)
+    
+    def choose_file(self):
+        lbl = Label(self, text="Choose input file", height=2, width=20, bg='#ffffff')
+        lbl.grid(column=0, row=2)
 
-        self.quit = tk.Button(self, text="QUIT", fg="red",
-                              command=self.master.destroy)
-        self.quit.pack(side="bottom")
+        btn = Button(self, text='Click to Open File', command=self.callback, bg='#377dff', highlightcolor='#0069d9', fg='#ffffff', bd='1px', height='2')
+        btn.grid(column=1, row=2)
 
-    def say_hi(self):
-        print("hi there, everyone!")
+    def callback(self):
+        name= fd.askopenfilename() 
+        print(name)
 
-root = tk.Tk()
-app = Application(master=root)
-app.mainloop()
+root = Tk()
+root.geometry("800x600+300+300")
+app = Application(root)
+root.mainloop()
