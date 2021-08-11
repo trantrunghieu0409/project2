@@ -1,7 +1,7 @@
 from backtrack import solve
 from AStar import solve
 import pysat_CNF as py
-from BruteForce import solve
+import BruteForce as bf
 from Problem import Problem
 
 import time
@@ -25,72 +25,71 @@ def write_file(output_file, solution):
     pass
 
 def main():
-    # initialize
-    matrix = read_file('input.txt')
+    
+    input_file = [
+        # file you want to test
+        # remember to put ',' at the end ;) 
+        'test_case/input.txt', 
+        #'test_case/input2.txt',
+        #'test_case/input3.txt',
+    ]
 
-    # formualte problem
-    p = Problem(matrix)
-         
-    # Your algorithm
-    solution = py.solve(p)
+    problem_list = []
+    for inp in input_file:
+        matrix = read_file(inp)
 
-    # Write into output file
-    write_file('output.txt', solution)    
+        # formualte problem
+        problem_list.append(Problem(matrix))
 
-
-def main_test():
-    matrix = read_file('input.txt')
-
-    # formualte problem
-    p = Problem(matrix)
     
     # initialize
     duration = time.time() - time.time()
-    count = 0
     # start clock
 
     # number of time to run
-    max_run = 1
-    for _ in range(max_run):
-        print("Running: " + str(_ + 1)  + '...')
+    result = []
+    for problem in problem_list:
+        print(f"Running:... ")
         
         start = time.time()
 
-        # Your algorithma2
-
-        solution = py.solve(p)
-
+        # Your algorithm
         # Should have a line: solution = ....
+
+        solution = py.solve(problem)
+        #solution = bf.solve(problem)
+
 
         # end clock
         end = time.time()    
         
         # print the interval + solution
-        duration += end - start
+        result.append((solution[:].copy(), end - start))
 
-        # Check: complete + leading number != 0
-        if solution != None and p.check_solution(solution):
-            count+=1 # count number of successful run 
+    print(".................................................................")
+    n_test = len(input_file)
+    count = 0
+    for i in range(n_test):
+        p = problem_list[i]
+        solution = result[i][0]
+        time_run = result[i][1]
 
-    print("......................................")
-    print(f'Solution: {solution}')
-    print('>>>>>')
-    print(f'Number of success solution: {count}/{max_run}')
-    if solution != None:
+        print(f'Test case {i + 1}:' )
+        print(f'Solution: {solution}')
+        print('Visualize:')
+        p.show(solution)
         if p.check_solution(solution):
-            print('Correct solution!')
-            p.show(solution)
+            print('=> Correct solution!')
+            count+=1
         else:
-            print('Wrong solution!')
-    print('<<<<<<')
-    print(f'Time require: {duration / max_run}')
-    print("......................................")
-
+            print('=> Wrong solution!')
+        print(f'Time running: {time_run} (s)')
+        print(".................................................................")
+    print(f'Number of test cases: {n_test}')
+    print(f'Number of success solution: {count}/{n_test}')
+    print(f'Average time require: {sum([time for solution , time in result]) / n_test}')
 
 #----------------------------------------------------------------------
-# call main function
+#Run this if you want to show result
 #if __name__ == '__main__':
 #    main()
-
-# Call main_test() if you want to show time and check solution
-main_test()
