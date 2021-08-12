@@ -110,5 +110,6 @@ def solve(p):
     solution = []
     rs = Backtrack(p.puzzle, p.board, solution, 0,0)
     # format solution
-    rs = [x + 1 if x + 1 in rs else -(x + 1) for x in range(p.size ** 2)]
+    if rs != None:
+        rs = [x + 1 if x + 1 in rs else -(x + 1) for x in range(p.size ** 2)]
     return rs

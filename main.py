@@ -31,7 +31,7 @@ def main():
         # remember to put ',' at the end ;) 
         'test_case/input.txt',
         'test_case/input2.txt',
-        #'test_case/input3.txt',
+        'test_case/input3.txt',
     ]
 
     problem_list = []
@@ -56,9 +56,9 @@ def main():
         # Your algorithm
         # Should have a line: solution = ....
 
-        #solution = py.solve(problem)
+        solution = py.solve(problem)
         #solution = bf.solve(problem)
-        solution = bt.solve(problem)
+        #solution = bt.solve(problem)
         # solution = bf.solve(problem[1])
 
 
@@ -66,28 +66,32 @@ def main():
         end = time.time()    
         
         # print the interval + solution
-        if solution != None:
-            result.append((solution[:].copy(), end - start))
+        result.append((solution, end - start))
 
-    print(".................................................................")
+
     n_test = len(input_file)
     count = 0
     for i in range(n_test):
+        print(".................................................................")
         p = problem_list[i]
+
         solution = result[i][0]
         time_run = result[i][1]
-
+        
         print(f'Test case {i + 1}:' )
         print(f'Solution: {solution}')
-        print('Visualize:')
-        p.show(solution)
-        if p.check_solution(solution):
-            print('=> Correct solution!')
-            count+=1
-        else:
-            print('=> Wrong solution!')
+        if solution != None:
+            print('Visualize:')
+            p.show(solution)
+            if p.check_solution(solution):
+                print('=> Correct solution!')
+                count+=1
+            else:
+                print('=> Wrong solution!')
+
         print(f'Time running: {time_run} (s)')
-        print(".................................................................")
+        
+    print(".................................................................")
     print(f'Number of test cases: {n_test}')
     print(f'Number of success solution: {count}/{n_test}')
     print(f'Average time require: {sum([time for solution , time in result]) / n_test}')
