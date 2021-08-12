@@ -105,7 +105,7 @@ def main():
 
 # This function is for debugging
 def main_test():
-    p = Problem(read_file('test_case/input.txt'))
+    p = Problem(read_file('test_case/input3.txt'))
     res = p.gen_all_CNF()
     pos=[x for x in res if sum(x)> 0]
     neg=[x for x in res if sum(x) < 0]
@@ -120,9 +120,8 @@ def main_test():
         for i in range(size):
             for j in range(size):
                 if p.board[i][j] not in exclude_list:
-                    res_1.append((p.board[i][j], (len([x for x in pos if p.board[i][j] in x]))))# + len([x for x in pos if p.board[i][j] in x]))))
+                    res_1.append((-p.board[i][j], (len([x for x in neg if -p.board[i][j] in x]))))# + len([x for x in pos if p.board[i][j] in x]))))
         res_1 = sorted(res_1, key = lambda x : x[1], reverse = True)
-        print(res_1)
         index= 0
         h = res_1[index]
         heuristic = h[1]
@@ -131,8 +130,8 @@ def main_test():
         print(f'Chosen: {h[0]} , heuristic: {heuristic}')
     
         if len(exclude_list) > 0:
-            #neg = [x for x in neg if exclude_list[-1] not in x]
-            pos = [x for x in pos if exclude_list[-1] not in x]
+            neg = [x for x in neg if exclude_list[-1] not in x]
+            #pos = [x for x in pos if exclude_list[-1] not in x]
             #res = [x for x in pos if -exclude_list[-1] not in x]
             #print(res)
         

@@ -111,7 +111,7 @@ class Problem:
         for it in c:
             clause = list(it) + [x for x in surr if x not in list(it)]
             res = gen_clauses(k, np.array(clause))
-            #res = [sorted(x) for x in res if sorted(x) not in clauses]
+            res = [sorted(x) for x in res if sorted(x) not in clauses]
             
             clauses += res
         return clauses
