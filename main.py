@@ -1,4 +1,4 @@
-from backtrack import solve
+import backtrack as bt
 from AStar import solve
 import pysat_CNF as py
 import BruteForce as bf
@@ -29,8 +29,8 @@ def main():
     input_file = [
         # file you want to test
         # remember to put ',' at the end ;) 
-        'test_case/input.txt', 
-        #'test_case/input2.txt',
+        'test_case/input.txt',
+        'test_case/input2.txt',
         #'test_case/input3.txt',
     ]
 
@@ -39,7 +39,7 @@ def main():
         matrix = read_file(inp)
 
         # formualte problem
-        problem_list.append([Problem(matrix), matrix])
+        problem_list.append(Problem(matrix))
 
     
     # initialize
@@ -56,21 +56,24 @@ def main():
         # Your algorithm
         # Should have a line: solution = ....
 
-        # solution = py.solve(problem[0])
-        solution = bf.solve(problem[1])
+        #solution = py.solve(problem)
+        #solution = bf.solve(problem)
+        solution = bt.solve(problem)
+        # solution = bf.solve(problem[1])
 
 
         # end clock
         end = time.time()    
         
         # print the interval + solution
-        result.append((solution[:].copy(), end - start))
+        if solution != None:
+            result.append((solution[:].copy(), end - start))
 
     print(".................................................................")
     n_test = len(input_file)
     count = 0
     for i in range(n_test):
-        p = problem_list[i][0]
+        p = problem_list[i]
         solution = result[i][0]
         time_run = result[i][1]
 
@@ -92,4 +95,4 @@ def main():
 #----------------------------------------------------------------------
 #Run this if you want to show result
 if __name__ == '__main__':
-   main()
+    main()
