@@ -56,8 +56,8 @@ def main():
         # Your algorithm
         # Should have a line: solution = ....
 
-        solution = py.solve(problem[0])
-        # solution = bf.solve(problem[1])
+        # solution = py.solve(problem[0])
+        solution = bf.solve(problem[1])
 
 
         # end clock
