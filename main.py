@@ -122,6 +122,7 @@ def main_test():
                 if p.board[i][j] not in exclude_list:
                     res_1.append((-p.board[i][j], (len([x for x in neg if -p.board[i][j] in x]))))# + len([x for x in pos if p.board[i][j] in x]))))
         res_1 = sorted(res_1, key = lambda x : x[1], reverse = True)
+        print(res_1)
         index= 0
         h = res_1[index]
         heuristic = h[1]
@@ -134,8 +135,8 @@ def main_test():
             #pos = [x for x in pos if exclude_list[-1] not in x]
             #res = [x for x in pos if -exclude_list[-1] not in x]
             #print(res)
-        
-    
+
+
     solution = [-(x  + 1) if -(x  + 1) in exclude_list else (x + 1)  for x in range(size ** 2)]
     
     #print(sorted(exclude_list))
