@@ -29,7 +29,7 @@ def main():
     input_file = [
         # file you want to test
         # remember to put ',' at the end ;) 
-        # 'test_case/input.txt',
+         'test_case/input.txt',
         'test_case/input2.txt',
         #'test_case/input3.txt',
     ]
@@ -77,7 +77,7 @@ def main():
         
         print(f'Test case {i + 1}:' )
         print(f'Solution: {solution}')
-        if solution != None:
+        if solution != None and len(solution) > 0:
             print('Visualize:')
             p.show(solution)
             if p.check_solution(solution):
