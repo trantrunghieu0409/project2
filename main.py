@@ -96,8 +96,8 @@ def main():
 
 #----------------------------------------------------------------------
 #Run this if you want to show result
-#if __name__ == '__main__':
-#    main()
+if __name__ == '__main__':
+   main()
 
 
 
@@ -148,4 +148,4 @@ def main_test():
     #for k in res_1:
     #    print(f'Exclude {k[0]} : {len(k[1])}')
     
-main_test()
+# main_test()
