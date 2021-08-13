@@ -60,7 +60,7 @@ class Application(Frame):
                 label.after(1000, label.destroy)
             self.square.clear()
         name= fd.askopenfilename()
-        lbl = Label(self, text=name, height=2, width=20, bg='#f9f9f9')
+        lbl = Label(self, text=f'...{name[len(name) - 20:len(name)]}', height=2, width=20, bg='#f9f9f9')
         lbl.grid(column=0, row=2)
         lbl = Label(self, text="", height=2, width=20, bg='#eae9ea')
         lbl.grid(column=0, row=3)
