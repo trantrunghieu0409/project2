@@ -40,10 +40,10 @@ class Application(Frame):
     
     def start(self):
         for s in self.square:
-            s.config(bg="#027403")
+            s.config(bg="#027403", fg='#ffffff')
 
     def init_square(self, txt, i, j, color):
-        lbl = Label(self, text=txt, height=5, width=10, bg=color, bd='10px', borderwidth="2", relief="solid")
+        lbl = Label(self, text=txt, height=5, width=10, bg=color, bd='10px', borderwidth="2", relief="solid", fg='#000000')
         lbl.grid(column=j, row = i)
         return lbl
 
