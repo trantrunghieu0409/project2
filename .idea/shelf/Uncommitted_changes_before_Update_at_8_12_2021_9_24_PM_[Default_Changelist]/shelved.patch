@@ -1,0 +1,49 @@
+Index: pysat_CNF.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import Problem\r\nfrom pysat.solvers import Glucose3\r\n\r\ndef solve(p):\r\n    CNF_clauses = p.gen_all_CNF()\r\n    g = Glucose3()\r\n    for it in CNF_clauses:\r\n        g.add_clause([int(k) for k in it])\r\n    g.solve()\r\n    model = g.get_model()\r\n    return model\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/pysat_CNF.py b/pysat_CNF.py
+--- a/pysat_CNF.py	(revision ed98c3ec41f982d8f7ea206729d96f510880a49a)
++++ b/pysat_CNF.py	(date 1628742196375)
+@@ -6,6 +6,6 @@
+     g = Glucose3()
+     for it in CNF_clauses:
+         g.add_clause([int(k) for k in it])
+-    g.solve()
++    print(g.solve())
+     model = g.get_model()
+     return model
+Index: main.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import backtrack as bt\r\nfrom AStar import solve\r\nimport pysat_CNF as py\r\nimport BruteForce as bf\r\nfrom Problem import Problem\r\n\r\nimport time\r\n\r\ndef read_file(input_file):\r\n    \"\"\"\r\n    Read input from file\r\n\r\n    Returns a matrix\r\n\r\n    Note: character '.' will be convert into -1.\r\n    \"\"\"\r\n    matrix = list()\r\n    with open(input_file, 'r') as f:\r\n        for line in f:\r\n            matrix.append([int(x) if x != '.' else -1 for x in line.split()])    \r\n        f.close()\r\n    return matrix\r\n\r\ndef write_file(output_file, solution):\r\n    pass\r\n\r\ndef main():\r\n    \r\n    input_file = [\r\n        # file you want to test\r\n        # remember to put ',' at the end ;) \r\n        'test_case/input.txt',\r\n        'test_case/input2.txt',\r\n        #'test_case/input3.txt',\r\n    ]\r\n\r\n    problem_list = []\r\n    for inp in input_file:\r\n        matrix = read_file(inp)\r\n\r\n        # formualte problem\r\n        problem_list.append(Problem(matrix))\r\n\r\n    \r\n    # initialize\r\n    duration = time.time() - time.time()\r\n    # start clock\r\n\r\n    # number of time to run\r\n    result = []\r\n    for problem in problem_list:\r\n        print(f\"Running:... \")\r\n        \r\n        start = time.time()\r\n\r\n        # Your algorithm\r\n        # Should have a line: solution = ....\r\n\r\n        #solution = py.solve(problem)\r\n        #solution = bf.solve(problem)\r\n        solution = bt.solve(problem)\r\n        # solution = bf.solve(problem[1])\r\n\r\n\r\n        # end clock\r\n        end = time.time()    \r\n        \r\n        # print the interval + solution\r\n        if solution != None:\r\n            result.append((solution[:].copy(), end - start))\r\n\r\n    print(\".................................................................\")\r\n    n_test = len(input_file)\r\n    count = 0\r\n    for i in range(n_test):\r\n        p = problem_list[i]\r\n        solution = result[i][0]\r\n        time_run = result[i][1]\r\n\r\n        print(f'Test case {i + 1}:' )\r\n        print(f'Solution: {solution}')\r\n        print('Visualize:')\r\n        p.show(solution)\r\n        if p.check_solution(solution):\r\n            print('=> Correct solution!')\r\n            count+=1\r\n        else:\r\n            print('=> Wrong solution!')\r\n        print(f'Time running: {time_run} (s)')\r\n        print(\".................................................................\")\r\n    print(f'Number of test cases: {n_test}')\r\n    print(f'Number of success solution: {count}/{n_test}')\r\n    print(f'Average time require: {sum([time for solution , time in result]) / n_test}')\r\n\r\n#----------------------------------------------------------------------\r\n#Run this if you want to show result\r\nif __name__ == '__main__':\r\n    main()
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/main.py b/main.py
+--- a/main.py	(revision ed98c3ec41f982d8f7ea206729d96f510880a49a)
++++ b/main.py	(date 1628768671616)
+@@ -30,7 +30,7 @@
+         # file you want to test
+         # remember to put ',' at the end ;) 
+         'test_case/input.txt',
+-        'test_case/input2.txt',
++        #'test_case/input2.txt',
+         #'test_case/input3.txt',
+     ]
+ 
+@@ -56,9 +56,9 @@
+         # Your algorithm
+         # Should have a line: solution = ....
+ 
+-        #solution = py.solve(problem)
++        solution = py.solve(problem)
+         #solution = bf.solve(problem)
+-        solution = bt.solve(problem)
++        #solution = bt.solve(problem)
+         # solution = bf.solve(problem[1])
+ 
+ 

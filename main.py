@@ -132,7 +132,6 @@ def main_test():
             #res = [x for x in pos if -exclude_list[-1] not in x]
             #print(res)
 
-    print(exclude_list)
     
     solution = [-(x  + 1) if -(x  + 1) in exclude_list else (x + 1)  for x in range(size ** 2)]
     
