@@ -1,5 +1,6 @@
 import Problem
 from itertools import combinations
+from random import randrange
 
 def brute_force(p):
     init_list = [x + 1 for x in range(p.size**2)]
@@ -13,7 +14,7 @@ def brute_force(p):
             if p.check_solution(result):    
                 return result
     return None
-    
+
 def solve(p):
     result = brute_force(p)
     return result

@@ -3,7 +3,6 @@ from AStar import solve
 import pysat_CNF as py
 import BruteForce as bf
 from Problem import Problem
-
 import time
 
 def read_file(input_file):
@@ -30,14 +29,13 @@ def main():
         # file you want to test
         # remember to put ',' at the end ;) 
          # 'test_case/input.txt',
-        'test_case/input2.txt',
+        'test_case/input4.txt',
         #'test_case/input3.txt',
     ]
 
     problem_list = []
     for inp in input_file:
         matrix = read_file(inp)
-
         # formualte problem
         problem_list.append(Problem(matrix))
 
@@ -55,9 +53,9 @@ def main():
         # Your algorithm
         # Should have a line: solution = ....
 
-        # solution = py.solve(problem)
-        solution = bf.solve(problem)
-        # solution = bt.solve(problem)
+        solution = py.solve(problem)
+        # solution = bf.solve(problem)
+        solution = bt.solve(problem)
 
         # end clock
         end = time.time()    
