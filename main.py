@@ -95,6 +95,76 @@ def main():
 
 #----------------------------------------------------------------------
 #Run this if you want to show result
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()
 
+# This function is for debugging
+def main_test():
+    p = Problem(read_file('test_case/input3.txt'))
+    res = p.gen_all_CNF()
+    pos=[x for x in res if sum(x)> 0]
+    neg=[x for x in res if sum(x) < 0]
+    print(f'Total: {len(res)}')
+    print(res)
+    #for it in res:
+    #    print(it)
+    size = p.size
+    heuristic = -1
+    exclude_list = [] # list chua phan tu xet roi
+    while heuristic != 0:
+        res_1 = dict()
+        for i in range(size):
+            for j in range(size):
+                if p.board[i][j] in exclude_list:
+                    continue
+                else:
+                    #res_1[-p.board[i][j]] = min([len(x) for x in neg if -p.board[i][j] in x])#+ sum([len(y) for y in pos if p.board[i][j] in y])))
+                    for x in res:
+                        if p.board[i][j] in x:
+                            if p.board[i][j] in res_1:
+                                if res_1[p.board[i][j]] > len(x):
+                                    res_1[p.board[i][j]] = len(x)
+                            else:
+                                res_1[p.board[i][j]] = len(x)
+                        if -p.board[i][j] in x:
+                            if -p.board[i][j] in res_1:
+                                if res_1[-p.board[i][j]] > len(x):
+                                    res_1[-p.board[i][j]] = len(x)
+                            else:
+                                res_1[-p.board[i][j]] = len(x)
+
+        # res_1 = sorted(res_1.items(), key = lambda item : item[1], reverse = True) this is no need
+        if len(res_1) == 0:
+            break
+        key = min(res_1, key=res_1.get)
+        heuristic = res_1[key]
+        if heuristic > 0:
+            exclude_list.append(key)
+            for y in res:
+                if key in y:
+                    res = [x for x in res if exclude_list[-1] not in x]
+                if -key in y:
+                    y.remove(-key)
+        print(f'Chosen: {key} , heuristic: {heuristic}')
+        # if len(exclude_list) > 0:
+        #     res = [x for x in res if exclude_list[-1] not in x]
+        #     pos = [x for x in pos if exclude_list[-1] > 0 and  exclude_list[-1] not in x]
+            #pos = [x for x in pos if -exclude_list[-1] not in x]
+
+            #res = [x for x in pos if -exclude_list[-1] not in x]
+            #print(res)
+    heuristic = -1
+    
+    solution = sorted([x if x in exclude_list else -x for x in range(1, size**2+1)], key = lambda item: abs(item))#+ list({x[0] for x in neg if len(x) == 1})
+
+    #print(sorted(exclude_list))
+    print(f"Your solution   : {solution}")
+
+    print(p.check_solution(solution))
+    
+    p.show(solution)
+    #res_1.sort(key = lambda x : len(x[1]))
+    #for k in res_1:
+    #    print(f'Exclude {k[0]} : {len(k[1])}')
+    
+main_test()
