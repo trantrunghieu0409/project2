@@ -1,5 +1,5 @@
 import backtrack as bt
-from AStar import solve
+import AStar as AStar
 import pysat_CNF as py
 import BruteForce as bf
 from Problem import Problem
@@ -28,10 +28,10 @@ def main():
     input_file = [
         # file you want to test
         # remember to put ',' at the end ;) 
-         'test_case/input.txt',
-         'test_case/input2.txt',
+        #'test_case/input.txt',
+        #'test_case/input2.txt',
         'test_case/input3.txt',
-        'test_case/input4.txt',
+        #'test_case/input4.txt',
     ]
 
     problem_list = []
@@ -54,9 +54,10 @@ def main():
         # Your algorithm
         # Should have a line: solution = ....
 
-        solution = py.solve(problem)
-        solution = bf.solve(problem)
-        solution = bt.solve(problem)
+        #solution = py.solve(problem)
+        #solution = bf.solve(problem)
+        solution = AStar.solve(problem)
+        #solution = bt.solve(problem)
 
         # end clock
         end = time.time()    
@@ -97,51 +98,3 @@ def main():
 if __name__ == '__main__':
     main()
 
-
-
-# This function is for debugging
-def main_test():
-    p = Problem(read_file('test_case/input3.txt'))
-    res = p.gen_all_CNF()
-    pos=[x for x in res if sum(x)> 0]
-    neg=[x for x in res if sum(x) < 0]
-    print(f'Total: {len(res)}')
-    #for it in res:
-    #    print(it)
-    size = p.size
-    heuristic = -1
-    exclude_list = [] # list chua phan tu xet roi
-    while heuristic != 0:
-        res_1 = []
-        for i in range(size):
-            for j in range(size):
-                if p.board[i][j] not in exclude_list:
-                    res_1.append((-p.board[i][j], (len([x for x in neg if -p.board[i][j] in x]))))# + len([x for x in pos if p.board[i][j] in x]))))
-        res_1 = sorted(res_1, key = lambda x : x[1], reverse = True)
-
-        h = res_1[0]
-        heuristic = h[1]
-        if heuristic > 0:
-            exclude_list.append(h[0])
-        print(f'Chosen: {h[0]} , heuristic: {heuristic}')
-    
-        if len(exclude_list) > 0:
-            neg = [x for x in neg if exclude_list[-1] not in x]
-            #pos = [x for x in pos if exclude_list[-1] not in x]
-            #res = [x for x in pos if -exclude_list[-1] not in x]
-            #print(res)
-
-    
-    solution = [-(x  + 1) if -(x  + 1) in exclude_list else (x + 1)  for x in range(size ** 2)]
-    
-    #print(sorted(exclude_list))
-    print(f"Your solution   : {solution}")
-
-    print(p.check_solution(solution))
-    
-    p.show(solution)
-    #res_1.sort(key = lambda x : len(x[1]))
-    #for k in res_1:
-    #    print(f'Exclude {k[0]} : {len(k[1])}')
-    
-#main_test()

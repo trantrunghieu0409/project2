@@ -41,6 +41,7 @@ class Problem:
                     for j in range(self.size):
                         if self.puzzle[i][j] != -1:
                             if len([x for x in get_surrounding(self.board,i ,j) if solution[x - 1] > 0]) != self.puzzle[i][j]:
+                                print(i * self.size + j + 1)
                                 return False
                 
                 return True
@@ -111,7 +112,7 @@ class Problem:
         for it in c:
             clause = list(it) + [x for x in surr if x not in list(it)]
             res = gen_clauses(k, np.array(clause))
-            res = [sorted(x) for x in res if sorted(x) not in clauses]
+            res = [sorted(x) for x in res if sorted(x) not in clauses] # remove duplicate
             
             clauses += res
         return clauses
