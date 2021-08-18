@@ -55,8 +55,8 @@ def main():
         # Should have a line: solution = ....
 
         solution = py.solve(problem)
-        solution = bf.solve(problem)
-        solution = bt.solve(problem)
+        #solution = bf.solve(problem)
+        #solution = bt.solve(problem)
 
         # end clock
         end = time.time()    
@@ -122,28 +122,34 @@ def main_test():
                     #res_1[-p.board[i][j]] = min([len(x) for x in neg if -p.board[i][j] in x])#+ sum([len(y) for y in pos if p.board[i][j] in y])))
                     for x in res:
                         if p.board[i][j] in x:
+                            # if min([len(y) for y in res if -p.board[i][j] in y]) == 1:
+                            #     res_1[-p.board[i][j]] = 999
                             if p.board[i][j] in res_1:
-                                if res_1[p.board[i][j]] > len(x):
-                                    res_1[p.board[i][j]] = len(x)
+                                if res_1[p.board[i][j]][0] > len(x):
+                                    res_1[p.board[i][j]][0] = len(x)
+                                    res_1[p.board[i][j]][1] += 1
                             else:
-                                res_1[p.board[i][j]] = len(x)
-                        if -p.board[i][j] in x:
+                                res_1[p.board[i][j]] = [len(x), 1]
+                        elif -p.board[i][j] in x:
                             if -p.board[i][j] in res_1:
-                                if res_1[-p.board[i][j]] > len(x):
-                                    res_1[-p.board[i][j]] = len(x)
+                                if res_1[-p.board[i][j]][0] > len(x):
+                                    res_1[-p.board[i][j]][0] = len(x)
+                                    res_1[-p.board[i][j]][1] += 1
                             else:
-                                res_1[-p.board[i][j]] = len(x)
+                                res_1[-p.board[i][j]] = [len(x), 1]
 
         # res_1 = sorted(res_1.items(), key = lambda item : item[1], reverse = True) this is no need
         if len(res_1) == 0:
             break
         key = min(res_1, key=res_1.get)
-        heuristic = res_1[key]
+        # if -key in res_1:
+        #     if res_1[key] == res_1[-key]:
+        #         key = -key
+        heuristic = res_1[key][0]
         if heuristic > 0:
             exclude_list.append(key)
+            res = [x for x in res if key not in x]
             for y in res:
-                if key in y:
-                    res = [x for x in res if exclude_list[-1] not in x]
                 if -key in y:
                     y.remove(-key)
         print(f'Chosen: {key} , heuristic: {heuristic}')
@@ -168,4 +174,4 @@ def main_test():
     #for k in res_1:
     #    print(f'Exclude {k[0]} : {len(k[1])}')
     
-main_test()
+#main_test()
