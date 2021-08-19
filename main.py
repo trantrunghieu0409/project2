@@ -1,5 +1,5 @@
 import backtrack as bt
-import AStar as AStar
+from AStar import solve
 import pysat_CNF as py
 import BruteForce as bf
 from Problem import Problem
@@ -28,10 +28,11 @@ def main():
     input_file = [
         # file you want to test
         # remember to put ',' at the end ;) 
-        #'test_case/input.txt',
-        #'test_case/input2.txt',
-        #'test_case/input3.txt',
-        'test_case/input4.txt',
+        #  'test_case/input.txt',
+        #  'test_case/input2.txt',
+        # 'test_case/input3.txt',
+        # 'test_case/input4.txt',
+        'test_case/input5.txt',
     ]
 
     problem_list = []
@@ -56,7 +57,6 @@ def main():
 
         solution = py.solve(problem)
         #solution = bf.solve(problem)
-        #solution = AStar.solve(problem)
         #solution = bt.solve(problem)
 
         # end clock
@@ -98,6 +98,8 @@ def main():
 if __name__ == '__main__':
     main()
 
+
+
 # This function is for debugging
 def main_test():
     p = Problem(read_file('test_case/input4.txt'))
@@ -118,27 +120,33 @@ def main_test():
                 if p.board[i][j] not in exclude_list:
                     for x in res:
                         if p.board[i][j] in x:
+                            # if min([len(y) for y in res if -p.board[i][j] in y]) == 1:
+                            #     res_1[-p.board[i][j]] = 999
                             if p.board[i][j] in res_1:
-                                if res_1[p.board[i][j]] > len(x):
-                                    res_1[p.board[i][j]] = len(x)
+                                if res_1[p.board[i][j]][0] > len(x):
+                                    res_1[p.board[i][j]][0] = len(x)
+                                    res_1[p.board[i][j]][1] += 1
                             else:
-                                res_1[p.board[i][j]] = len(x)
-                        if -p.board[i][j] in x:
+                                res_1[p.board[i][j]] = [len(x), 1]
+                        elif -p.board[i][j] in x:
                             if -p.board[i][j] in res_1:
-                                if res_1[-p.board[i][j]] > len(x):
-                                    res_1[-p.board[i][j]] = len(x)
+                                if res_1[-p.board[i][j]][0] > len(x):
+                                    res_1[-p.board[i][j]][0] = len(x)
+                                    res_1[-p.board[i][j]][1] += 1
                             else:
-                                res_1[-p.board[i][j]] = len(x)
+                                res_1[-p.board[i][j]] = [len(x), 1]
 
         if len(res_1) == 0:
             break
         key = min(res_1, key=res_1.get)
-        heuristic = res_1[key]
+        # if -key in res_1:
+        #     if res_1[key] == res_1[-key]:
+        #         key = -key
+        heuristic = res_1[key][0]
         if heuristic > 0:
             exclude_list.append(key)
+            res = [x for x in res if key not in x]
             for y in res:
-                if key in y:
-                    res = [x for x in res if exclude_list[-1] not in x]
                 if -key in y:
                     y.remove(-key)
         print(f'Chosen: {key} , heuristic: {heuristic}')
