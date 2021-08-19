@@ -54,9 +54,9 @@ class Application(Frame):
         self.heu = Label(self, text="Step: 0, Heuristic: -1", height=2, width=20, bg='#f9f9f9')
         self.heu.grid(column=0, row=4)
 
-    def run_solution(self, i, j, size, heu):
+    def run_solution(self, i, j, size, heu, step):
         index = i*size + j
-        self.heu.config(text=f'Step: {index + 1}, Heuristic: {heu}')
+        self.heu.config(text=f'Step: {step}, Heuristic: {heu}')
         self.square[index].config(bg='#ee161f',fg='#000000')
         self.square[index].after(int(self.delayTime * 1000))
         self.update()
@@ -64,12 +64,15 @@ class Application(Frame):
     def start(self):
         for s in self.square:
             s.config(bg="#027403", fg='#ffffff')
+        s.after(1000)
+        self.update()  
         if self.square:
             p = Problem(self.matrix)
             res = p.gen_all_CNF()
             size = p.size
             heuristic = -1
             exclude_list = [] # list chua phan tu xet roi
+            countStep = 1
             while heuristic != 0:
                 res_1 = dict()
                 for i in range(size):
@@ -116,7 +119,8 @@ class Application(Frame):
                         if -key in y:
                             y.remove(-key)
                 if key > 0:
-                    self.run_solution((abs(key)-1)//size, (abs(key)-1) % size, size, heuristic)
+                    self.run_solution((abs(key)-1)//size, (abs(key)-1) % size, size, heuristic, countStep)
+                    countStep += 1
             self.popup_bonus()
 
     def init_square(self, txt, i, j, color):
@@ -137,10 +141,10 @@ class Application(Frame):
                 label.after(1000, label.destroy)
             self.square.clear()
         name= fd.askopenfilename()
-        lbl = Label(self, text=f'...{name[len(name) - 20:len(name)]}', height=2, width=20, bg='#f9f9f9')
-        lbl.grid(column=0, row=2)
-        lbl = Label(self, text="", height=2, width=20, bg='#eae9ea')
-        lbl.grid(column=0, row=3)
+        lbl1 = Label(self, text=f'...{name[len(name) - 20:len(name)]}', height=2, width=20, bg='#f9f9f9')
+        lbl1.grid(column=0, row=2)
+        lbl2 = Label(self, text="", height=2, width=20, bg='#eae9ea')
+        lbl2.grid(column=0, row=3)
         self.matrix = read_file(name)
         self.init_all_square('#ffffff', self.matrix)
         self.updateInput = Entry(self)
