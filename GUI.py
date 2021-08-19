@@ -2,7 +2,7 @@ from tkinter import *
 from tkinter import filedialog as fd 
 from math import sqrt
 from Problem import Problem
-import pysat_CNF as py
+from tkinter.messagebox import showinfo
 import time
 
 def read_file(input_file):
@@ -54,9 +54,9 @@ class Application(Frame):
         self.heu = Label(self, text="Step: 0, Heuristic: -1", height=2, width=20, bg='#f9f9f9')
         self.heu.grid(column=0, row=4)
 
-    def run_solution(self, i, j, size):
+    def run_solution(self, i, j, size, heu):
         index = i*size + j
-        self.heu.config(text=f'Step: {index + 1}, Heuristic: {i}')
+        self.heu.config(text=f'Step: {index + 1}, Heuristic: {heu}')
         self.square[index].config(bg='#ee161f',fg='#000000')
         self.square[index].after(int(self.delayTime * 1000))
         self.update()
@@ -65,11 +65,59 @@ class Application(Frame):
         for s in self.square:
             s.config(bg="#027403", fg='#ffffff')
         if self.square:
-            size = int(sqrt(len(self.solution)))
-            for i in range(size):
-                for j in range(size):
-                    if self.solution[i* size + j] < 0:
-                        self.run_solution(i, j, size)
+            p = Problem(self.matrix)
+            res = p.gen_all_CNF()
+            size = p.size
+            heuristic = -1
+            exclude_list = [] # list chua phan tu xet roi
+            while heuristic != 0:
+                res_1 = dict()
+                for i in range(size):
+                    for j in range(size):
+                        if p.board[i][j] in exclude_list:
+                            continue
+                        elif -p.board[i][j] in exclude_list:
+                            continue
+                        else:
+                            for x in res:
+                                if p.board[i][j] in x:
+                                    if -p.board[i][j] in res_1:
+                                        res_1[-p.board[i][j]][1] += 1
+                                    if p.board[i][j] in res_1:
+                                        if res_1[p.board[i][j]][0] > len(x):
+                                            res_1[p.board[i][j]][0] = len(x)
+                                        res_1[p.board[i][j]][1] -= 1 # use the number of time it occur to a second heuristic
+                                    else:
+                                        res_1[p.board[i][j]] = [len(x), -1]
+                                elif -p.board[i][j] in x:
+                                    if p.board[i][j] in res_1:
+                                        res_1[p.board[i][j]][1] += 1
+                                    if -p.board[i][j] in res_1:
+                                        if res_1[-p.board[i][j]][0] > len(x):
+                                            res_1[-p.board[i][j]][0] = len(x)
+                                        res_1[-p.board[i][j]][1] -= 1 # use the number of time it occur to a second heuristic
+                                    else:
+                                        res_1[-p.board[i][j]] = [len(x), -1]
+                                else:
+                                    if sum(x) > 0:
+                                        if p.board[i][j] in res_1:
+                                            res_1[p.board[i][j]][1] -= 1
+                                    elif sum(x) < 0:
+                                        if -p.board[i][j] in res_1:
+                                            res_1[-p.board[i][j]][1] -= 1
+                if len(res_1) == 0:
+                    break
+                key = min(res_1, key=res_1.get)
+                heuristic = res_1[key][0]
+                if heuristic > 0:
+                    exclude_list.append(key)
+                    res = [x for x in res if key not in x]
+                    for y in res:
+                        if -key in y:
+                            y.remove(-key)
+                if key > 0:
+                    self.run_solution((abs(key)-1)//size, (abs(key)-1) % size, size, heuristic)
+            self.popup_bonus()
 
     def init_square(self, txt, i, j, color):
         lbl = Label(self, text=txt, height=2, width=5, bg=color, bd='10px', borderwidth="2", relief="solid", fg='#000000')
@@ -94,16 +142,25 @@ class Application(Frame):
         lbl = Label(self, text="", height=2, width=20, bg='#eae9ea')
         lbl.grid(column=0, row=3)
         self.matrix = read_file(name)
-        problem = Problem(self.matrix)
-        self.solution = py.solve(problem)
         self.init_all_square('#ffffff', self.matrix)
         self.updateInput = Entry(self)
         self.updateInput.insert(END, self.delayTime)
         self.updateInput.grid(column=0, row=3)
+
+    def popup_bonus(self):
+        win = Toplevel()
+        win.wm_title("A* Trace")
+
+        l = Label(win, text="A* run completely", height=10, width=30)
+        l.grid(row=0, column=0)
+
+        b = Button(win, text="Done", command=win.destroy)
+        b.grid(row=1, column=0)
 
 if __name__ == '__main__':
     root = Tk()
     root.geometry("1200x800+300+300")
     app = Application(root)
     app.mainloop()
+
 
