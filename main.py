@@ -101,7 +101,7 @@ def main():
 
 # This function is for debugging
 def main_test():
-    p = Problem(read_file('test_case/input3.txt'))
+    p = Problem(read_file('test_case/input5.txt'))
     res = p.gen_all_CNF()
     pos=[x for x in res if sum(x)> 0]
     neg=[x for x in res if sum(x) < 0]
@@ -139,7 +139,7 @@ def main_test():
                                 res_1[p.board[i][j]] = [len(x), -1]
                         elif -p.board[i][j] in x:
                             if p.board[i][j] in res_1:
-                                res_1[p.board[i][j]][1] += len(x)
+                                res_1[p.board[i][j]][1] += 1
                             if -p.board[i][j] in res_1:
                                 if res_1[-p.board[i][j]][0] > len(x):
                                     res_1[-p.board[i][j]][0] = len(x)
