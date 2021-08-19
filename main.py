@@ -28,8 +28,8 @@ def main():
     input_file = [
         # file you want to test
         # remember to put ',' at the end ;) 
-        #'test_case/input.txt',
-        'test_case/input2.txt',
+         'test_case/input.txt',
+        # 'test_case/input2.txt',
         # 'test_case/input3.txt',
         # 'test_case/input4.txt',
         #'test_case/input5.txt',
@@ -56,9 +56,9 @@ def main():
         # Should have a line: solution = ....
 
         solution = py.solve(problem)
-        #solution = bf.solve(problem)
-        #solution = bt.solve(problem)
-        #solution = astar.solve(problem)
+        solution = bf.solve(problem)
+        solution = bt.solve(problem)
+
         # end clock
         end = time.time()    
         
