@@ -25,6 +25,7 @@ class Application(Frame):
         self.grid(padx=20, pady=20)
         self.matrix = None
         self.square = []
+        self.solution = None
 
     def initUI(self):
         self.parent.title("A* Trace")
@@ -38,9 +39,19 @@ class Application(Frame):
         btn = Button(self, text='Start', command=self.start, padx=10, bg='#377dff', highlightcolor='#0069d9', fg='#ffffff', bd='1px', height='2')
         btn.grid(column=3, row=2)
     
+    def run_solution(self):
+        solution = read_file('solution.txt')
+        size = len(solution)
+        for i in range(size):
+            for j in range(size):
+                if solution[i][j] > 0:
+                    text = solution[i][j] if solution[i][j] != -1 else ""
+                    self.square.append(self.init_square(text, i + 4, j + 4, '#ee161f'))
+                    
     def start(self):
         for s in self.square:
             s.config(bg="#027403", fg='#ffffff')
+        self.run_solution()
 
     def init_square(self, txt, i, j, color):
         lbl = Label(self, text=txt, height=5, width=10, bg=color, bd='10px', borderwidth="2", relief="solid", fg='#000000')
@@ -66,6 +77,7 @@ class Application(Frame):
         lbl.grid(column=0, row=3)
         self.matrix = read_file(name)
         self.init_all_square('#ffffff', self.matrix)
+
 
 root = Tk()
 root.geometry("1200x800+300+300")
