@@ -41,7 +41,6 @@ class Problem:
                     for j in range(self.size):
                         if self.puzzle[i][j] != -1:
                             if len([x for x in get_surrounding(self.board,i ,j) if solution[x - 1] > 0]) != self.puzzle[i][j]:
-                                #print(i * self.size + j + 1)
                                 return False
                 
                 return True

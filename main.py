@@ -102,12 +102,12 @@ if __name__ == '__main__':
 
 # This function is for debugging
 def main_test():
-    p = Problem(read_file('test_case/input3.txt'))
+    p = Problem(read_file('test_case/input4.txt'))
     res = p.gen_all_CNF()
     pos=[x for x in res if sum(x)> 0]
     neg=[x for x in res if sum(x) < 0]
     print(f'Total: {len(res)}')
-    print(res)
+    #print(res)
     #for it in res:
     #    print(it)
     size = p.size
@@ -117,10 +117,7 @@ def main_test():
         res_1 = dict()
         for i in range(size):
             for j in range(size):
-                if p.board[i][j] in exclude_list:
-                    continue
-                else:
-                    #res_1[-p.board[i][j]] = min([len(x) for x in neg if -p.board[i][j] in x])#+ sum([len(y) for y in pos if p.board[i][j] in y])))
+                if p.board[i][j] not in exclude_list:
                     for x in res:
                         if p.board[i][j] in x:
                             # if min([len(y) for y in res if -p.board[i][j] in y]) == 1:
@@ -139,7 +136,6 @@ def main_test():
                             else:
                                 res_1[-p.board[i][j]] = [len(x), 1]
 
-        # res_1 = sorted(res_1.items(), key = lambda item : item[1], reverse = True) this is no need
         if len(res_1) == 0:
             break
         key = min(res_1, key=res_1.get)
@@ -154,13 +150,7 @@ def main_test():
                 if -key in y:
                     y.remove(-key)
         print(f'Chosen: {key} , heuristic: {heuristic}')
-        # if len(exclude_list) > 0:
-        #     res = [x for x in res if exclude_list[-1] not in x]
-        #     pos = [x for x in pos if exclude_list[-1] > 0 and  exclude_list[-1] not in x]
-            #pos = [x for x in pos if -exclude_list[-1] not in x]
-
-            #res = [x for x in pos if -exclude_list[-1] not in x]
-            #print(res)
+ 
     heuristic = -1
     
     solution = sorted([x if x in exclude_list else -x for x in range(1, size**2+1)], key = lambda item: abs(item))#+ list({x[0] for x in neg if len(x) == 1})
