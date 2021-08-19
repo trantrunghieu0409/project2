@@ -3,12 +3,25 @@ import numpy as np
 import priority_queue as pQueue
 
 #def cost_function(arr, p2)
+def find_way(track_table, end_point):
+    index = -1
+    path = []
+    size = len(track_table) // 2
+    while index == -1 or track_table[index] != 0:
+        if end_point < 0:
+            index = abs(end_point) - 1
+        elif end_point > 0:
+            index = size + end_point - 1
+        end_point = track_table[index]
+        path.append(end_point)
+    return path
+
 
 
 def solve(p):
     res = p.gen_all_CNF()
     
-    exclude_list = [] # list chua phan tu xet roi
+    exclude_list = [0] # list chua phan tu xet roi
     pos=[x for x in res if sum(x) > 0]
     neg=[x for x in res if x not in pos]
     neg_arr = []
@@ -21,79 +34,79 @@ def solve(p):
 
     size = p.size
     heuristic = -1
-    path = [[]]
     t = 0
+    track_table = [0 for x in range(-size ** 2, size **2 + 1) if x != 0]
     while heuristic != 0:
         res_1 = []
         res_2 = []
+        res_3 = []
+        res_4 = []
         distance = []
         for i in range(size):
             for j in range(size):
-                if p.board[i][j] not in exclude_list and p.board[i][j] not in path[t]:
-                    point = p.board[i][j]
-                    k = [x for x in neg_arr[t] if -p.board[i][j] not in x]
-                    value = len(k)
-                    res_1.append([point, value])
-                    k2 = [x for x in pos_arr[t] if p.board[i][j] not in x]
-                    #k2 = [list(np.delete(x, np.where(np.array(x) == point))) for x in pos]
-                    #k2 = list(set(tuple(sorted(sub)) for sub in k2)) # remove duplicate
-                    value2 = len(k2)
-                    
-                    if len(pos) > value2:
-                        res_2.append([point, value2])
-                    
-                    if len(neg) > value:
-                        q.insert([point, value])
+                if p.board[i][j] in exclude_list and -p.board[i][j] in exclude_list:
+                    continue
+                point = p.board[i][j]
+                k = [x for x in neg_arr[t] if -p.board[i][j] not in x]
+                value = len(k)
+                k2 = [x for x in pos_arr[t] if p.board[i][j] not in x]
+                value2 = len(k2)
+                
+                if -p.board[i][j] not in exclude_list:
+                    q.insert([-point, value + len(pos_arr[t]) - value2 , t, exclude_list[-1], value])
 
-        #distance = [[res_1[index][0], res_1[index][1] + res_2[index][1]] for index in range(len(res_1))]
-        
-        #distance = sorted(distance, key = lambda x : x[1])
-        #res_1 = sorted(res_1, key = lambda x : x[1])
-        #res_2 = sorted(res_2, key = lambda x : x[1])
+                if p.board[i][j] not in exclude_list:
+                    q.insert([point, len(neg_arr[t]) - value + value2, t, exclude_list[-1], value2])
+        #print(sorted(q.queue, key = lambda x : x[1]))
+
         if (not q.isEmpty()):
             choose = q.delete()
-            print(choose)
+            
             key = choose[0]
             heuristic = choose[1]
-            
+            t = choose[2]
+            index = 0
+            if key > 0:
+                index += p.size
+            track_table[index + abs(key) - 1] = choose[3]
             exclude_list.append(key)
-            print(f'Chosen: {key} , heuristic: {heuristic}')
+            print(f'Chosen: {key} , heuristic: {choose[1]}')
             if t + 1 >= len(neg_arr):
                 neg_arr.append([])
                 pos_arr.append([])
-            neg_arr[t + 1] = ([x for x in neg_arr[t] if -key not in x])
-            pos_arr[t + 1] = ([x for x in pos_arr[t] if key not in x])
-            path[t].append(key)
-            check = False
-            print(pos_arr[t+1])
-              
-            if len(pos_arr[t+1]) == 0:
-                check = True
-                exclude_list.pop()
+            if key < 0:
+                neg_arr[t + 1] = ([x for x in neg_arr[t] if key not in x])
+                pos_arr[t + 1] = ([x for x in pos_arr[t]])
+            else:
+                pos_arr[t + 1] = ([x for x in pos_arr[t] if key not in x])
+                neg_arr[t + 1] = ([x for x in neg_arr[t]])
+            t +=1 
+            print(t)
                 
-            print(path)
-            if not check:
-                t+=1
-                if t >= len(path):
-                    path.append([])
-                    
-            #        print(exclude_list)
-            #       raise "Problem"
-            #        break
-        else:
-            t -= 1
-            
 
-        
+        else:
+            break
+            
+    print(track_table)
+    for it in [x for x in range(-size **2, 0) if x != 0]:
+        print(it)
+        solution = [it]
+        b = find_way(track_table, it)
+        solution.extend(b)
+        solution.pop() 
+        a = solution.copy()  
+        solution = [x for x in range(1, size ** 2 + 1)]
+        for it in a:
+            solution[abs(it) - 1] = int(it)
+        print(solution)
+
+
+        if (p.check_solution(solution)):
+            raise "congraluation!!!!!!!!!!!!!!"
+        p.show(solution)
     #exclude_list.pop()
     print(exclude_list)
         
-    solution = list()
-    for x in range(1, size ** 2 + 1):
-        if x in exclude_list:
-            solution.append(-x)
-        else:
-            solution.append(x)
     
 
 

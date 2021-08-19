@@ -1,5 +1,5 @@
 import backtrack as bt
-from AStar import solve
+import AStar as astar
 import pysat_CNF as py
 import BruteForce as bf
 from Problem import Problem
@@ -28,11 +28,11 @@ def main():
     input_file = [
         # file you want to test
         # remember to put ',' at the end ;) 
-        #  'test_case/input.txt',
-        #  'test_case/input2.txt',
+        #'test_case/input.txt',
+        'test_case/input2.txt',
         # 'test_case/input3.txt',
         # 'test_case/input4.txt',
-        'test_case/input5.txt',
+        #'test_case/input5.txt',
     ]
 
     problem_list = []
@@ -58,7 +58,7 @@ def main():
         solution = py.solve(problem)
         #solution = bf.solve(problem)
         #solution = bt.solve(problem)
-
+        #solution = astar.solve(problem)
         # end clock
         end = time.time()    
         
