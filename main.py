@@ -58,7 +58,6 @@ def main():
         # solution = bf.solve(problem)
         # solution = bt.solve(problem)
         solution = astar.solve(problem)
-
         # end clock
         end = time.time()    
         

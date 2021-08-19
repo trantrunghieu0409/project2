@@ -22,12 +22,10 @@ def solve(p):
     res = p.gen_all_CNF()
     
     exclude_list = [0] # list chua phan tu xet roi
-    pos=[x for x in res if sum(x) > 0]
-    neg=[x for x in res if x not in pos]
-    neg_arr = []
-    pos_arr = []
-    neg_arr.append(neg)
-    pos_arr.append(pos)
+
+    res_arr = []
+    res_arr.append(res)
+
     print(f'Total: {len(res)}')
     
     q = pQueue.PriorityQueue()
@@ -42,17 +40,21 @@ def solve(p):
                 if p.board[i][j] in exclude_list and -p.board[i][j] in exclude_list:
                     continue
                 point = p.board[i][j]
-                #min: số clause thỏa mãn*min(len(clauses))
-                k = [x for x in neg_arr[t] if -p.board[i][j] in x]
-                value = len(k)
-                k2 = [x for x in pos_arr[t] if p.board[i][j] in x]
-                value2 = len(k2)
-                
-                if -p.board[i][j] not in exclude_list:
-                    q.insert([-point, value + len(pos_arr[t]) - value2 , t, exclude_list[-1], value])
+                k = [x for x in res_arr[t] if -p.board[i][j] in x] # clause thoa man am
+                if len(k) > 0:
+                    min_c = min([len(x) for x in k])
+                    value = len(k)
+                    if -p.board[i][j] not in exclude_list:
+                        q.insert([-point, min_c * value , t, exclude_list[-1]])
 
-                if p.board[i][j] not in exclude_list:
-                    q.insert([point, len(neg_arr[t]) - value + value2, t, exclude_list[-1], value2])
+                k2 = [x for x in res_arr[t] if p.board[i][j] in x] # clause thoa man duong
+                if len(k2) > 0:
+                    min_c2 = min([len(x) for x in k2])
+                    value2 = len(k2)
+                    if p.board[i][j] not in exclude_list:
+                        q.insert([point, min_c2 * value2, t, exclude_list[-1]])
+                #f(n)= g(n) + h(n)
+
         #print(sorted(q.queue, key = lambda x : x[1]))
 
         if (not q.isEmpty()):
@@ -67,15 +69,12 @@ def solve(p):
             track_table[index + abs(key) - 1] = choose[3]
             exclude_list.append(key)
             print(f'Chosen: {key} , heuristic: {choose[1]}')
-            if t + 1 >= len(neg_arr):
-                neg_arr.append([])
-                pos_arr.append([])
-            if key < 0:
-                neg_arr[t + 1] = ([x for x in neg_arr[t] if key not in x])
-                pos_arr[t + 1] = ([x for x in pos_arr[t]])
-            else:
-                pos_arr[t + 1] = ([x for x in pos_arr[t] if key not in x])
-                neg_arr[t + 1] = ([x for x in neg_arr[t]])
+            if t + 1 >= len(res_arr):
+                res_arr.append([])
+            res_arr[t + 1] = [x for x in res_arr[t] if key not in x]
+            for it in res_arr[t + 1]:
+                if -key in it:
+                    it.remove(-key)
             t +=1 
             print(t)
                 
@@ -84,7 +83,7 @@ def solve(p):
             break
             
     print(track_table)
-    for it in [x for x in range(-size **2, 0) if x != 0]:
+    for it in [x for x in range(-size **2, size ** 2 + 1) if x != 0]:
         print(it)
         solution = [it]
         b = find_way(track_table, it)
