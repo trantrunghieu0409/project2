@@ -1,6 +1,5 @@
 import Problem
 from itertools import combinations
-from random import randrange
 
 def brute_force(p):
     init_list = [x + 1 for x in range(p.size**2)]
