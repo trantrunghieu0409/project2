@@ -1,5 +1,5 @@
 import backtrack as bt
-from AStar import solve
+import AStar as astar
 import pysat_CNF as py
 import BruteForce as bf
 from Problem import Problem
@@ -54,8 +54,8 @@ def main():
         # Your algorithm
         # Should have a line: solution = ....
 
-        #solution = py.solve(problem)
-        #solution = bf.solve(problem)
+        solution = py.solve(problem)
+        solution = bf.solve(problem)
         solution = bt.solve(problem)
 
         # end clock
