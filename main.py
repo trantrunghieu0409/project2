@@ -129,8 +129,8 @@ def main_test():
                             # if min([len(y) for y in res if -p.board[i][j] in y]) == 1:
                             # #     res_1[-p.board[i][j]] = 999
                             #if len([x for])
-                            if -p.board[i][j] in res_1:
-                                res_1[-p.board[i][j]][1] += 1
+                            # if -p.board[i][j] in res_1:
+                            #     res_1[-p.board[i][j]][1] += 1
                             if p.board[i][j] in res_1:
                                 if res_1[p.board[i][j]][0] > len(x):
                                     res_1[p.board[i][j]][0] = len(x)
@@ -138,8 +138,8 @@ def main_test():
                             else:
                                 res_1[p.board[i][j]] = [len(x), -1]
                         elif -p.board[i][j] in x:
-                            if p.board[i][j] in res_1:
-                                res_1[p.board[i][j]][1] += 1
+                            # if p.board[i][j] in res_1:
+                            #     res_1[p.board[i][j]][1] += 1
                             if -p.board[i][j] in res_1:
                                 if res_1[-p.board[i][j]][0] > len(x):
                                     res_1[-p.board[i][j]][0] = len(x)
@@ -147,22 +147,13 @@ def main_test():
                                 # res_1[-p.board[i][j]][1] -= len([x for x in pos if p.board[i][j] in x])
                             else:
                                 res_1[-p.board[i][j]] = [len(x), -1]
-                        else:
-                            if sum(x) < 0:
-                                if -p.board[i][j] in res_1:
-                                    res_1[-p.board[i][j]][1] += 1
-                                # if p.board[i][j] in res_1:
-                                #     res_1[p.board[i][j]][1] -= 1
-                            # else:
-                            #     res_1[-p.board[i][j]] = [999, 0]
-                            elif sum(x) > 0:
-                                if p.board[i][j] in res_1:
-                                    res_1[p.board[i][j]][1] += 1
-                                # if -p.board[i][j] in res_1:
-                                #     res_1[-p.board[i][j]][1] -= 1
-                            # else:
-                            #     res_1[p.board[i][j]] = [999, 0]
-
+                    if p.board[i][j] in res_1 and -p.board[i][j] in res_1:
+                        temp = res_1[p.board[i][j]][1]
+                        res_1[p.board[i][j]][1] -= (len(res) - res_1[-p.board[i][j]][1])
+                        #res_1[-p.board[i][j]][1] += (len(res) - temp)
+                    # số clause thỏa mãn + số clause ko bị conflict
+                    # số âm xuất hiện thì sẽ làm số dương bị conflict
+                    # số clause âm ko conflict = lấy toàn bộ clause trong CNF - số clause dương xuất hiện
 
 
         # res_1 = sorted(res_1.items(), key = lambda item : item[1], reverse = True) this is no need
