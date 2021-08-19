@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="2c28e92a-ff8e-4d1d-85b5-de1fc8bad7ca" name="Default Changelist" comment="I'm too tired, i'm out">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AStar.py" beforeDir="false" afterPath="$PROJECT_DIR$/AStar.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

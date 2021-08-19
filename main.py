@@ -29,7 +29,7 @@ def main():
         # file you want to test
         # remember to put ',' at the end ;) 
          #'test_case/input.txt',
-         'test_case/input2.txt',
+         'test_case/input5.txt',
         #'test_case/input3.txt',
         #'test_case/input4.txt',
     ]
@@ -54,9 +54,10 @@ def main():
         # Your algorithm
         # Should have a line: solution = ....
 
-        solution = py.solve(problem)
-        solution = bf.solve(problem)
-        solution = bt.solve(problem)
+        # solution = py.solve(problem)
+        # solution = bf.solve(problem)
+        # solution = bt.solve(problem)
+        solution = astar.solve(problem)
 
         # end clock
         end = time.time()    
@@ -101,7 +102,7 @@ def main():
 
 # This function is for debugging
 def main_test():
-    p = Problem(read_file('test_case/input5.txt'))
+    p = Problem(read_file('test_case/input.txt'))
     res = p.gen_all_CNF()
     pos=[x for x in res if sum(x)> 0]
     neg=[x for x in res if sum(x) < 0]
@@ -154,6 +155,7 @@ def main_test():
                     # số clause thỏa mãn + số clause ko bị conflict
                     # số âm xuất hiện thì sẽ làm số dương bị conflict
                     # số clause âm ko conflict = lấy toàn bộ clause trong CNF - số clause dương xuất hiện
+                    # [15], [-15]
 
 
         # res_1 = sorted(res_1.items(), key = lambda item : item[1], reverse = True) this is no need

@@ -37,19 +37,15 @@ def solve(p):
     t = 0
     track_table = [0 for x in range(-size ** 2, size **2 + 1) if x != 0]
     while heuristic != 0:
-        res_1 = []
-        res_2 = []
-        res_3 = []
-        res_4 = []
-        distance = []
         for i in range(size):
             for j in range(size):
                 if p.board[i][j] in exclude_list and -p.board[i][j] in exclude_list:
                     continue
                 point = p.board[i][j]
-                k = [x for x in neg_arr[t] if -p.board[i][j] not in x]
+                #min: số clause thỏa mãn*min(len(clauses))
+                k = [x for x in neg_arr[t] if -p.board[i][j] in x]
                 value = len(k)
-                k2 = [x for x in pos_arr[t] if p.board[i][j] not in x]
+                k2 = [x for x in pos_arr[t] if p.board[i][j] in x]
                 value2 = len(k2)
                 
                 if -p.board[i][j] not in exclude_list:
