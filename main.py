@@ -1,5 +1,5 @@
 import backtrack as bt
-from AStar import solve
+import AStar as astar
 import pysat_CNF as py
 import BruteForce as bf
 from Problem import Problem

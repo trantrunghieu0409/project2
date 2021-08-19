@@ -17,6 +17,9 @@ class PriorityQueue(object):
             i = [x[0] for x in self.queue].index(data[0])
             if self.queue[i][1] > data[1]:
                 self.queue[i][1] = data[1]
+                self.queue[i][2] = data[2]
+                self.queue[i][3] = data[3]
+                self.queue[i][4] = data[4]
         except ValueError:
             self.queue.append(data)
   
