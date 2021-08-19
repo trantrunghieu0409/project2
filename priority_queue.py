@@ -16,10 +16,7 @@ class PriorityQueue(object):
         try:
             i = [x[0] for x in self.queue].index(data[0])
             if self.queue[i][1] > data[1]:
-                self.queue[i][1] = data[1]
-                self.queue[i][2] = data[2]
-                self.queue[i][3] = data[3]
-                self.queue[i][4] = data[4]
+                self.queue[i] = data
         except ValueError:
             self.queue.append(data)
   
@@ -28,7 +25,7 @@ class PriorityQueue(object):
         try:
             min = 0
             for i in range(len(self.queue)):
-                if self.queue[i][1] < self.queue[min][1]:
+                if self.queue[i][1] > self.queue[min][1]:
                     min = i
             item = self.queue[min]
             del self.queue[min]
