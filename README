@@ -1,0 +1,4 @@
+- Đầu tiên để chạy GUI, ta chạy command line với lệnh 'python GUI.py' để xem 3 thuật toán A*,
+Backtracking, PySAT
+- Chạy file main.py để có thể xem tất cả 4 thuật toán gồm: Solution, Time của từng thuật toán ứng với các
+input
