@@ -13,22 +13,17 @@ class PriorityQueue(object):
   
     # for inserting an element in the queue
     def insert(self, data):
-        try:
-            i = [x[0] for x in self.queue].index(data[0])
-            if self.queue[i][1] > data[1]:
-                self.queue[i] = data
-        except ValueError:
-            self.queue.append(data)
+        self.queue.append(data)
   
     # for popping an element based on Priority
     def delete(self):
         try:
-            min = 0
+            max = 0
             for i in range(len(self.queue)):
-                if self.queue[i][1] > self.queue[min][1]:
-                    min = i
-            item = self.queue[min]
-            del self.queue[min]
+                if self.queue[i][0] + self.queue[i][1] > self.queue[max][0] + self.queue[max][1]:
+                    max = i
+            item = self.queue[max]
+            del self.queue[max]
             return item
         except IndexError:
             pass

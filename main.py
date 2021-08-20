@@ -28,8 +28,8 @@ def main():
     input_file = [
         # file you want to test
         # remember to put ',' at the end ;) 
-         #'test_case/input.txt',
-         'test_case/input5.txt',
+        'test_case/input.txt',
+        #'test_case/input5.txt',
         #'test_case/input3.txt',
         #'test_case/input4.txt',
     ]
@@ -94,8 +94,8 @@ def main():
 
 #----------------------------------------------------------------------
 #Run this if you want to show result
-# if __name__ == '__main__':
-#     main()
+if __name__ == '__main__':
+    main()
 
 
 
@@ -103,18 +103,11 @@ def main():
 def main_test():
     p = Problem(read_file('test_case/input3.txt'))
     res = p.gen_all_CNF()
-    pos=[x for x in res if sum(x)> 0]
-    neg=[x for x in res if sum(x) < 0]
     print(f'Total: {len(res)}')
-    #print(res)
-    #for it in res:
-    #    print(it)
     size = p.size
     heuristic = -1
     exclude_list = [] # list chua phan tu xet roi
     while heuristic != 0:
-        # pos = [x for x in res if sum(x) > 0]
-        # neg = [x for x in res if sum(x) < 0]
         res_1 = dict()
         for i in range(size):
             for j in range(size):
@@ -123,7 +116,6 @@ def main_test():
                 elif -p.board[i][j] in exclude_list:
                     continue
                 else:
-                    #res_1[-p.board[i][j]] = min([len(x) for x in neg if -p.board[i][j] in x])#+ sum([len(y) for y in pos if p.board[i][j] in y])))
                     for x in res:
                         if p.board[i][j] in x:
                             # if min([len(y) for y in res if -p.board[i][j] in y]) == 1:
@@ -144,7 +136,6 @@ def main_test():
                                 if res_1[-p.board[i][j]][0] > len(x):
                                     res_1[-p.board[i][j]][0] = len(x)
                                 res_1[-p.board[i][j]][1] -= 1 # use the number of time it occur to a second heuristic
-                                # res_1[-p.board[i][j]][1] -= len([x for x in pos if p.board[i][j] in x])
                             else:
                                 res_1[-p.board[i][j]] = [len(x), -1]
                         else:
@@ -187,7 +178,7 @@ def main_test():
             #res = [x for x in pos if -exclude_list[-1] not in x]
             #print(res)
     
-    solution = sorted([x if x in exclude_list else -x for x in range(1, size**2+1)], key = lambda item: abs(item))#+ list({x[0] for x in neg if len(x) == 1})
+    solution = [x if x in exclude_list else -x for x in range(1, size**2+1)]
 
     #print(sorted(exclude_list))
     print(f"Your solution   : {solution}")
@@ -199,4 +190,4 @@ def main_test():
     #for k in res_1:
     #    print(f'Exclude {k[0]} : {len(k[1])}')
     
-main_test()
+#main_test()
