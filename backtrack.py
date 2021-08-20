@@ -37,12 +37,13 @@ def check_surr(board, i, j, solution, puzzle):
     return True
 
 def Backtrack(puzzle, board, solution, i, j, app, size):
-    app.reset_background()
-    for k in solution:
-        app.update_square2((abs(k)-1)//size, (abs(k)-1) % size, size, 0, app.countStep, app.green)
-    app.after(1)
-    app.update()
-    app.countStep += 1
+    if app is not None:
+        app.reset_background()
+        for k in solution:
+            app.update_square2((abs(k)-1)//size, (abs(k)-1) % size, size, 0, app.countStep, app.green)
+        app.after(1)
+        app.update()
+        app.countStep += 1
     if j == len(board):
         i += 1
         j = 0
@@ -68,7 +69,7 @@ def Backtrack(puzzle, board, solution, i, j, app, size):
 
 
 
-def solve(p, app):
+def solve(p, app=None):
     solution = []
     rs = Backtrack(p.puzzle, p.board, solution, 0,0, app, p.size)
     # format solution

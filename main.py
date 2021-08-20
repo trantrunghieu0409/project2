@@ -112,7 +112,7 @@ if __name__ == '__main__':
         2: 'backtrack',
         3: 'bruteforce',
     }
-    chosen_algo = algo[0] # change number inside brackets if you want to change algorithm
+    chosen_algo = algo[2] # change number inside brackets if you want to change algorithm
 
     main(input_file, output_file, chosen_algo)
 

@@ -1,4 +1,20 @@
-- Đầu tiên để chạy GUI, ta chạy command line với lệnh 'python GUI.py' để xem 3 thuật toán A*,
+HIỂN THỊ GIAO DIỆN GUI
+Đầu tiên để chạy GUI, ta chạy command line với lệnh 'python GUI.py' để xem 3 thuật toán A*,
 Backtracking, PySAT
-- Chạy file main.py để có thể xem tất cả 4 thuật toán gồm: Solution, Time của từng thuật toán ứng với các
+Ở GUI:
+- Ta cần chọn thuật toán sau đó nhấn nút Choose Algorithm
+- Sau đó chọn file input đầu vào bằng cách nhấn nút Browser
+- Ta có thể thay đổi speed để tô màu nhanh hơn bằng cách nhập số ví dụ như 0.5 để delay 0.5s sau đó nhấn nút Update
+- Cuối cùng, nhấn Start để chạy
+
+
+
+HIỂN THỊ KẾT QUẢ RA FILE
+Chạy file main.py ở command line với lệnh 'python main.py'
+Để có thể xem tất cả 4 thuật toán gồm: Solution, Time của từng thuật toán ứng với các
 input
+Chạy commandline: 
+- Đầu tiên, ta chọn input file đầu vào
+- Sau đó, ta đặt tên file output để ghi solution ra file
+- Cuối cùng, ta chọn thuật toán để chạy chương trình
+

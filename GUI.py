@@ -79,10 +79,12 @@ class Application(Frame):
 
     def run_solution(self, solution, color):
         size = int(sqrt(len(solution)))
+        step = 0
         for i in range(size):
             for j in range(size):
                 if solution[i*size + j] < 0:
-                    self.update_square(i, j, size, 0, 0, color)
+                    step += 1
+                    self.update_square(i, j, size, 0, step, color)
 
     def reset_background(self):
         for s in self.square:
@@ -131,7 +133,10 @@ class Application(Frame):
         lbl1.grid(column=0, row=2)
         lbl2 = Label(self, text="", height=2, width=20, bg='#eae9ea')
         lbl2.grid(column=0, row=3)
-        self.matrix = read_file(name)
+        if name:
+            self.matrix = read_file(name)
+        else:
+            self.matrix = []
         self.init_all_square('#ffffff', self.matrix)
         self.updateInput = Entry(self)
         self.updateInput.insert(END, self.delayTime)

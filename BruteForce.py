@@ -14,6 +14,6 @@ def brute_force(p):
                 return result
     return None
 
-def solve(p, app):
+def solve(p):
     result = brute_force(p)
     return result

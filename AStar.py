@@ -1,4 +1,4 @@
-def solve(p, app):
+def solve(p, app=None):
     res = p.gen_all_CNF()
     size = p.size
     heuristic = -1
@@ -49,7 +49,8 @@ def solve(p, app):
             for y in res:
                 if -key in y:
                     y.remove(-key) 
-        if key < 0:
+        heuristic = -heuristic * res_1[key][1]
+        if key <= 0 and app is not None:
             app.update_square((abs(key)-1)//size, (abs(key)-1) % size, size, heuristic, countStep, app.red)
             countStep += 1
 
