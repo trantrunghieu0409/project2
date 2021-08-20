@@ -101,7 +101,7 @@ if __name__ == '__main__':
 
 # This function is for debugging
 def main_test():
-    p = Problem(read_file('test_case/input2.txt'))
+    p = Problem(read_file('test_case/input5.txt'))
     res = p.gen_all_CNF()
     print(f'Total: {len(res)}')
     size = p.size
@@ -118,7 +118,11 @@ def main_test():
                 else:
                     for x in res:
                         if p.board[i][j] in x:
-                 
+                            # if min([len(y) for y in res if -p.board[i][j] in y]) == 1:
+                            # #     res_1[-p.board[i][j]] = 999
+                            #if len([x for])
+                            if -p.board[i][j] in res_1:
+                                res_1[-p.board[i][j]][1] += 1
                             if p.board[i][j] in res_1:
                                 if res_1[p.board[i][j]][0] > len(x):
                                     res_1[p.board[i][j]][0] = len(x)
@@ -126,6 +130,8 @@ def main_test():
                             else:
                                 res_1[p.board[i][j]] = [len(x), -1]
                         elif -p.board[i][j] in x:
+                            if p.board[i][j] in res_1:
+                                res_1[p.board[i][j]][1] += 1
                             if -p.board[i][j] in res_1:
                                 if res_1[-p.board[i][j]][0] > len(x):
                                     res_1[-p.board[i][j]][0] = len(x)
@@ -139,7 +145,6 @@ def main_test():
                             elif sum(x) < 0:
                                 if -p.board[i][j] in res_1:
                                     res_1[-p.board[i][j]][1] -= 1
-
                         #res_1[-p.board[i][j]][1] += (len(res) - temp)
                     # số clause thỏa mãn + số clause ko bị conflict
                     # số âm xuất hiện thì sẽ làm số dương bị conflict
@@ -151,6 +156,7 @@ def main_test():
         #print(res)
         if len(res_1) == 0:
             break
+        #print(res)
         key = min(res_1, key=res_1.get)
         # if -key in res_1:
         # res['a'] = [1,2]

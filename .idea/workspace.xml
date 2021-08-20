@@ -6,8 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="2c28e92a-ff8e-4d1d-85b5-de1fc8bad7ca" name="Default Changelist" comment="I'm too tired, i'm out">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AStar.py" beforeDir="false" afterPath="$PROJECT_DIR$/AStar.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_case/input5.txt" beforeDir="false" afterPath="$PROJECT_DIR$/test_case/input5.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -110,7 +109,21 @@
       <option name="project" value="LOCAL" />
       <updated>1629348390522</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="I'm too tired, i'm out">
+      <created>1629369421215</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1629369421215</updated>
+    </task>
+    <task id="LOCAL-00008" summary="I'm too tired, i'm out">
+      <created>1629370330059</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1629370330059</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
