@@ -1,6 +1,7 @@
 import Problem
 import numpy as np
 from itertools import combinations
+import time
 
 def get_surrounding(board, i, j):
   size = len(board)
@@ -35,36 +36,43 @@ def check_surr(board, i, j, solution, puzzle):
                     return False
     return True
 
-def Backtrack(puzzle, board, solution, i, j):
+def Backtrack(puzzle, board, solution, i, j, app, size):
+    app.reset_background()
+    for k in solution:
+        app.update_square2((abs(k)-1)//size, (abs(k)-1) % size, size, 0, app.countStep, app.green)
+    app.after(1)
+    app.update()
+    app.countStep += 1
     if j == len(board):
         i += 1
         j = 0
-    if i == len(board):
+    if i == len(board):           
         return solution
     result = None
     if puzzle[i][j] != -1:
         s = solution.copy()
         for it in combinations(get_surrounding(board, i, j), puzzle[i][j]):
             for k in it:
-                if k not in solution:
+                if k not in solution:   
                     solution.append(k)
             if check_surr(board, i, j, solution, puzzle):
-                result = Backtrack(puzzle, board, solution, i, j+1)
+                result = Backtrack(puzzle, board, solution, i, j+1, app, size)    
                 if result != None:
                     return result
             solution = s.copy()
         return None
     else:
         if check_surr(board, i, j, solution, puzzle):
-            return Backtrack(puzzle, board, solution, i, j+1)
+            return Backtrack(puzzle, board, solution, i, j+1, app, size)
     return None
 
 
 
-def solve(p):
+def solve(p, app):
     solution = []
-    rs = Backtrack(p.puzzle, p.board, solution, 0,0)
+    rs = Backtrack(p.puzzle, p.board, solution, 0,0, app, p.size)
     # format solution
     if rs != None:
         rs = [x + 1 if x + 1 in rs else -(x + 1) for x in range(p.size ** 2)]
     return rs
+

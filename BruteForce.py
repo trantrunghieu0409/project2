@@ -9,11 +9,11 @@ def brute_force(p):
             result = init_list.copy()
             for index in it:
                 result[index - 1] *= -1
-
+        
             if p.check_solution(result):    
                 return result
     return None
 
-def solve(p):
+def solve(p, app):
     result = brute_force(p)
     return result
