@@ -1,9 +1,13 @@
-from tkinter import *
-from tkinter import filedialog as fd 
-from math import sqrt
-from Problem import Problem
-from tkinter.messagebox import showinfo
 import time
+from tkinter import *
+import AStar as astar
+from math import sqrt
+import backtrack as bt
+import pysat_CNF as py
+import BruteForce as bf
+from Problem import Problem
+from tkinter import filedialog as fd 
+from tkinter.messagebox import showinfo
 
 def read_file(input_file):
     """
@@ -24,17 +28,24 @@ class Application(Frame):
     def __init__(self, parent):
         Frame.__init__(self, parent, background="#eae9ea")
         self.parent = parent
-        self.initUI()
-        self.control()
+        self.clicked = None
         self.grid(padx=20, pady=20)
         self.matrix = None
         self.square = []
         self.solution = None
+        self.type = None
+        self.countStep = None
+        self.initUI()
+        self.control()
+        self.choose_algorithm()
 
     def initUI(self):
-        self.parent.title("A* Trace")
+        self.parent.title("Visualization")
         self.pack(fill=BOTH, expand=1)
         self.delayTime = 0.5
+        self.countStep = 1
+        self.red = '#ee161f'
+        self.green = '#027403'
     
     def updateDelay(self):
         self.delayTime = float(self.updateInput.get())
@@ -54,74 +65,49 @@ class Application(Frame):
         self.heu = Label(self, text="Step: 0, Heuristic: -1", height=2, width=20, bg='#f9f9f9')
         self.heu.grid(column=0, row=4)
 
-    def run_solution(self, i, j, size, heu, step):
+    def update_square(self, i, j, size, heu, step, color):
         index = i*size + j
         self.heu.config(text=f'Step: {step}, Heuristic: {heu}')
-        self.square[index].config(bg='#ee161f',fg='#000000')
+        self.square[index].config(bg= color,fg='#000000')
         self.square[index].after(int(self.delayTime * 1000))
         self.update()
 
-    def start(self):
+    def update_square2(self, i, j, size, heu, step, color):
+        index = i*size + j
+        self.heu.config(text=f'Step: {step}, Heuristic: {heu}')
+        self.square[index].config(bg= color,fg='#000000')
+
+    def run_solution(self, solution, color):
+        size = int(sqrt(len(solution)))
+        for i in range(size):
+            for j in range(size):
+                if solution[i*size + j] < 0:
+                    self.update_square(i, j, size, 0, 0, color)
+
+    def reset_background(self):
         for s in self.square:
-            s.config(bg="#027403", fg='#ffffff')
+            s.config(bg=self.red, fg='#ffffff')
         s.after(1000)
-        self.update()  
-        if self.square:
-            p = Problem(self.matrix)
-            res = p.gen_all_CNF()
-            size = p.size
-            heuristic = -1
-            exclude_list = [] # list chua phan tu xet roi
-            countStep = 1
-            while heuristic != 0:
-                res_1 = dict()
-                for i in range(size):
-                    for j in range(size):
-                        if p.board[i][j] in exclude_list:
-                            continue
-                        elif -p.board[i][j] in exclude_list:
-                            continue
-                        else:
-                            for x in res:
-                                if p.board[i][j] in x:
-                                    if -p.board[i][j] in res_1:
-                                        res_1[-p.board[i][j]][1] += 1
-                                    if p.board[i][j] in res_1:
-                                        if res_1[p.board[i][j]][0] > len(x):
-                                            res_1[p.board[i][j]][0] = len(x)
-                                        res_1[p.board[i][j]][1] -= 1 # use the number of time it occur to a second heuristic
-                                    else:
-                                        res_1[p.board[i][j]] = [len(x), -1]
-                                elif -p.board[i][j] in x:
-                                    if p.board[i][j] in res_1:
-                                        res_1[p.board[i][j]][1] += 1
-                                    if -p.board[i][j] in res_1:
-                                        if res_1[-p.board[i][j]][0] > len(x):
-                                            res_1[-p.board[i][j]][0] = len(x)
-                                        res_1[-p.board[i][j]][1] -= 1 # use the number of time it occur to a second heuristic
-                                    else:
-                                        res_1[-p.board[i][j]] = [len(x), -1]
-                                else:
-                                    if sum(x) > 0:
-                                        if p.board[i][j] in res_1:
-                                            res_1[p.board[i][j]][1] -= 1
-                                    elif sum(x) < 0:
-                                        if -p.board[i][j] in res_1:
-                                            res_1[-p.board[i][j]][1] -= 1
-                if len(res_1) == 0:
-                    break
-                key = min(res_1, key=res_1.get)
-                heuristic = res_1[key][0]
-                if heuristic > 0:
-                    exclude_list.append(key)
-                    res = [x for x in res if key not in x]
-                    for y in res:
-                        if -key in y:
-                            y.remove(-key)
-                if key > 0:
-                    self.run_solution((abs(key)-1)//size, (abs(key)-1) % size, size, heuristic, countStep)
-                    countStep += 1
-            self.popup_bonus()
+        
+    def start(self):
+        if self.type == 0 or self.type == 1:
+            bg = self.green
+        else:
+            bg = self.red
+        for s in self.square:
+            s.config(bg=bg, fg='#ffffff')
+        s.after(1000)
+        self.update()
+        matrix = Problem(self.matrix)
+        if self.type is not None:
+            if self.type == 0:
+                solution = py.solve(matrix)
+                self.run_solution(solution, self.red)
+            elif self.type == 1:
+                solution = astar.solve(matrix, self)
+            elif self.type == 2:
+                solution = bt.solve(matrix, self)
+        self.popup_bonus()
 
     def init_square(self, txt, i, j, color):
         lbl = Label(self, text=txt, height=2, width=5, bg=color, bd='10px', borderwidth="2", relief="solid", fg='#000000')
@@ -153,18 +139,34 @@ class Application(Frame):
 
     def popup_bonus(self):
         win = Toplevel()
-        win.wm_title("A* Trace")
+        win.wm_title("Visualization")
 
-        l = Label(win, text="A* run completely", height=10, width=30)
+        l = Label(win, text="Run completely", height=10, width=30)
         l.grid(row=0, column=0)
 
         b = Button(win, text="Done", command=win.destroy)
         b.grid(row=1, column=0)
+
+    def switch_type(self):
+        opt = self.clicked.get()
+        switcher = {
+            "PySAT": 0,
+            "A*": 1,
+            "Backtrack": 2,
+        }   
+        self.type = switcher.get(opt, None)
+        
+    def choose_algorithm(self):
+        self.clicked = StringVar()
+        self.clicked.set('PySAT')   
+        drop = OptionMenu(self, self.clicked, "PySAT","A*", "Backtrack")
+        drop.grid(column=0, row=1)
+        btn = Button(self, text='Choose Algorithm', command=self.switch_type)
+        btn.grid(column=1, row=1)
 
 if __name__ == '__main__':
     root = Tk()
     root.geometry("1200x800+300+300")
     app = Application(root)
     app.mainloop()
-
 
