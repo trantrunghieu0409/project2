@@ -1,4 +1,3 @@
-import GUI
 import backtrack as bt
 import AStar as astar
 import pysat_CNF as py
@@ -117,11 +116,3 @@ if __name__ == '__main__':
 
     main(input_file, output_file, chosen_algo)
 
-
-
-# Run this if you want to have GUI visualization
-#if __name__ == '__main__':
-#    root = Tk()
-#    root.geometry("1200x800+300+300")
-#    app = Application(root)
-#    app.mainloop()
