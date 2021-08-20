@@ -12,8 +12,9 @@ class Problem:
     ...
     """
     board = list(list()) 
-
     size = int()
+
+
 
     def __init__(self, matrix):
         self.puzzle = [x[:] for x in matrix]
@@ -26,12 +27,6 @@ class Problem:
         """
         return self.size
 
-    def copy(self):
-        """
-        return a copy of puzzle
-        """
-        return [x[:] for x in self.puzzle]
-    
     def check_solution(self, solution):
         if type(solution) is list:
             # Form 1
@@ -41,26 +36,9 @@ class Problem:
                     for j in range(self.size):
                         if self.puzzle[i][j] != -1:
                             if len([x for x in get_surrounding(self.board,i ,j) if solution[x - 1] > 0]) != self.puzzle[i][j]:
-                                print(i * self.size + j + 1)
                                 return False
                 
                 return True
-
-            # Form 2
-            """
-            [1,2,3]
-            [4,-5,-6]
-            ...
-            """
-            if type(solution[0]) is list:
-                for i in range(self.size):
-                    for j in range(self.size):
-                        if self.puzzle[i][j] != -1:
-                            if len([x for x in get_surrounding(solution, i, j) if x  > 0]) != self.puzzle[i][j]:
-                                return False
-
-                return True
-
         # Different solution format
         return False 
 
@@ -68,12 +46,9 @@ class Problem:
         """
         True -> Green
         False -> Red
-        solution can be in 2 forms:
+        solution can be in form:
         1. list() , ex: [-1, 2, 3, -4, 5 ...]
         -1 means False -> color at position 1 is Red
-
-        2. list(list())
-        ex: [[1,2,3], [-4,-5,6],...]
 
         Visualize solution
         """
@@ -87,15 +62,6 @@ class Problem:
                         else:
                             print('_', end=' ')
                     print('')
-
-            # Form 2
-            elif type(solution[0]) is list:
-                for i in range(self.size):
-                    for j in range(self.size):
-                        if solution[i][j] > 0:
-                            print('G', end=' ')
-                        else:
-                            print('_', end=' ')
             else:
                 print("Invalid solution!")
         else:
@@ -124,6 +90,8 @@ class Problem:
                 if self.puzzle[i][j] != -1:
                     clauses += self.gen_one_CNF(i,j)
         return clauses
+
+    
 
 def get_surrounding(matrix, i, j):
     size = len(matrix)
